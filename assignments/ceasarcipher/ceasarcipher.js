@@ -1,16 +1,31 @@
-function ceasarcipher(str){
+function decodeStr(itemLoc){
+     let outStr = ''
+    itemLoc.forEach((item)=>{
+        outStr += String.fromCharCode(97+item-1)
+    })
+    return outStr;
+}
+
+function getStrOutput(outSplit,uppChars){
+    outSplit.forEach((item,index)=>{
+        if(uppChars.includes(index)){
+            outSplit[index]=outSplit[index].toUpperCase()
+            }
+        })
+    return outSplit.join('')
+}
+function ceasarcipher(str,num){
     let splitStr = str?.split('');
-    let outStr = ''
     let uppChars = []
     let itemLoc = []
     splitStr?.forEach((item,index)=>{
+        let regex = /\W/;
+        let actualLoc;
         if(item === item.toUpperCase()){
             uppChars.push(index)
         }
-        let regex = /\W/;
-        let actualLoc;
         if(regex.test(item)===false){
-            actualLoc = (item.toLowerCase().charCodeAt(0)-97+1) + 3
+            actualLoc = (item.toLowerCase().charCodeAt(0)-97+1) + num
             if(actualLoc <= 0){
                 actualLoc += 25;
             }
@@ -22,18 +37,9 @@ function ceasarcipher(str){
     }
         itemLoc.push(actualLoc)
     })
-    itemLoc.forEach((item)=>{
-        outStr += String.fromCharCode(97+item-1)
-    })
-    let outSplit = outStr.split('');
-    outSplit.forEach((item,index)=>{
-        if(uppChars.includes(index)){
-            outSplit[index]=outSplit[index].toUpperCase()
-            }
-        })
-    return outSplit.join('')
+    let outSplit = decodeStr(itemLoc).split('')
+    let res = getStrOutput(outSplit,uppChars);
+    return res;
 }
-// let regex = /\W/
-// console.log(regex.test('?'))
-// console.log(ceasarcipher('heLLo?'))
+console.log(ceasarcipher('heLlo',3))
 module.exports = ceasarcipher;
